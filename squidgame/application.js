@@ -1,94 +1,59 @@
 System.register([], function (_export, _context) {
-  'use strict';
+  "use strict";
 
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true,
-      });
-    } else {
-      obj[key] = value;
-    }
-    return obj;
-  }
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
   function createApplication(_ref) {
     var loadJsListFile = _ref.loadJsListFile,
-      fetchWasm = _ref.fetchWasm;
+        fetchWasm = _ref.fetchWasm;
     // NOTE: before here we shall not import any module!
     var promise = Promise.resolve();
     return promise.then(function () {
-      return _defineProperty(
-        {
-          start: start,
-        },
-        'import',
-        topLevelImport
-      );
+      return _defineProperty({
+        start: start
+      }, 'import', topLevelImport);
     });
 
     function start(_ref3) {
       var findCanvas = _ref3.findCanvas;
       var settings;
       var cc;
-      return Promise.resolve()
-        .then(function () {
-          console.log(cc);
-          return topLevelImport('cc');
-        })
-        .then(function (engine) {
-          console.log(engine);
-
-          cc = engine;
-          console.log(cc);
-
-          return loadSettingsJson(cc);
-        })
-        .then(function () {
-          console.log(cc);
-
-          settings = window._CCSettings;
-          return initializeGame(cc, settings, findCanvas)
-            .then(function () {
-              if (!settings.renderPipeline) return cc.game.run();
-            })
-            .then(function () {
-              if (settings.scriptPackages) {
-                return loadModulePacks(settings.scriptPackages);
-              }
-            })
-            .then(function () {
-              return loadJsList(settings.jsList);
-            })
-            .then(function () {
-              return loadAssetBundle(
-                settings.hasResourcesBundle,
-                settings.hasStartSceneBundle
-              );
-            })
-            .then(function () {
-              if (settings.renderPipeline) return cc.game.run();
-            })
-            .then(function () {
-              cc.game.onStart = onGameStarted.bind(null, cc, settings);
-              onGameStarted(cc, settings);
-            });
+      return Promise.resolve().then(function () {
+        return topLevelImport('cc');
+      }).then(function (engine) {
+        cc = engine;
+        return loadSettingsJson(cc);
+      }).then(function () {
+        settings = window._CCSettings;
+        return initializeGame(cc, settings, findCanvas).then(function () {
+          if (!settings.renderPipeline) return cc.game.run();
+        }).then(function () {
+          if (settings.scriptPackages) {
+            return loadModulePacks(settings.scriptPackages);
+          }
+        }).then(function () {
+          return loadJsList(settings.jsList);
+        }).then(function () {
+          return loadAssetBundle(settings.hasResourcesBundle, settings.hasStartSceneBundle);
+        }).then(function () {
+          if (settings.renderPipeline) return cc.game.run();
+        }).then(function () {
+          cc.game.onStart = onGameStarted.bind(null, cc, settings);
+          onGameStarted(cc, settings);
         });
+      });
     }
 
     function topLevelImport(url) {
-      return _context['import'](''.concat(url));
+      return _context["import"]("".concat(url));
     }
 
     function loadAssetBundle(hasResourcesBundle, hasStartSceneBundle) {
       var promise = Promise.resolve();
       var _cc$AssetManager$Buil = cc.AssetManager.BuiltinBundleName,
-        MAIN = _cc$AssetManager$Buil.MAIN,
-        RESOURCES = _cc$AssetManager$Buil.RESOURCES,
-        START_SCENE = _cc$AssetManager$Buil.START_SCENE;
+          MAIN = _cc$AssetManager$Buil.MAIN,
+          RESOURCES = _cc$AssetManager$Buil.RESOURCES,
+          START_SCENE = _cc$AssetManager$Buil.START_SCENE;
       var bundleRoot = hasResourcesBundle ? [RESOURCES, MAIN] : [MAIN];
 
       if (hasStartSceneBundle) {
@@ -115,18 +80,16 @@ System.register([], function (_export, _context) {
     }
 
     function loadModulePacks(packs) {
-      return Promise.all(
-        packs.map(function (pack) {
-          return topLevelImport(pack);
-        })
-      );
+      return Promise.all(packs.map(function (pack) {
+        return topLevelImport(pack);
+      }));
     }
 
     function loadJsList(jsList) {
       var promise = Promise.resolve();
       jsList.forEach(function (jsListFile) {
         promise = promise.then(function () {
-          return loadJsListFile('src/'.concat(jsListFile));
+          return loadJsListFile("src/".concat(jsListFile));
         });
       });
       return promise;
@@ -205,7 +168,7 @@ System.register([], function (_export, _context) {
 
     cc.director.loadScene(launchScene, null, function () {
       cc.view.setDesignResolutionSize(750, 1334, 4);
-      console.log('Success to load scene: '.concat(launchScene));
+      console.log("Success to load scene: ".concat(launchScene));
     });
   }
 
@@ -215,7 +178,7 @@ System.register([], function (_export, _context) {
       bundleVers: settings.bundleVers,
       remoteBundles: settings.remoteBundles,
       server: settings.server,
-      subpackages: settings.subpackages,
+      subpackages: settings.subpackages
     };
     var options = {
       debugMode: settings.debug ? cc.DebugMode.INFO : cc.DebugMode.ERROR,
@@ -227,15 +190,15 @@ System.register([], function (_export, _context) {
       adapter: findCanvas('GameCanvas'),
       assetOptions: assetOptions,
       customJointTextureLayouts: settings.customJointTextureLayouts || [],
-      physics: settings.physics,
+      physics: settings.physics
     };
     return options;
   }
 
-  _export('createApplication', createApplication);
+  _export("createApplication", createApplication);
 
   return {
     setters: [],
-    execute: function () {},
+    execute: function () {}
   };
 });
