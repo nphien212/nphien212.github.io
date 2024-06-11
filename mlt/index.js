@@ -1,4 +1,4 @@
-fetch('https://maylangthang.com.vn/wp-json/mp-show/get-branchs/')
+fetch('https://https://maylangthang.saola.tech/wp-json/mp-show/get-branchs/')
     .then(response => response.json())
     .then(data => {
         // Do something with the data
